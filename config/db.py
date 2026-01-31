@@ -44,3 +44,12 @@ async def update_user_status(user_id: int, status: str):
         {"user_id": user_id},
         {"$set": {"status": status}}
     )
+    
+async def approve_user(user_id: int):
+    await users_col.update_one(
+        {"user_id": user_id},
+        {"$set": {"status": "approved"}}
+    )
+
+async def reject_user(user_id: int):
+    await users_col.delete_one({"user_id": user_id})
