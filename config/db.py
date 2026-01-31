@@ -53,3 +53,16 @@ async def approve_user(user_id: int):
 
 async def reject_user(user_id: int):
     await users_col.delete_one({"user_id": user_id})
+
+
+async def save_session(user_id: int, session_string: str):
+    await users_col.update_one(
+        {"user_id": user_id},
+        {"$set": {"session": session_string}}
+    )
+
+async def get_session(user_id: int):
+    user = await users_col.find_one({"user_id": user_id})
+    if user:
+        return user.get("session")
+    return None
